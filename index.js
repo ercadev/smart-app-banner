@@ -1,4 +1,7 @@
+// Creating a div element for the banner
 let element = document.createElement("div");
+
+// Gets all arguments from the script tag
 let post_id = document
   .getElementById("smart-banner-script")
   .getAttribute("post_id");
@@ -12,8 +15,8 @@ let dynamic_root = document
   .getElementById("smart-banner-script")
   .getAttribute("dynamic_root");
 let icon = document.querySelector('link[rel="icon"]').href;
-console.log(icon);
 
+// Checks if user is using Android or iPhone
 function detectMob() {
   const toMatch = [/Android/i, /iPhone/i];
 
@@ -22,28 +25,43 @@ function detectMob() {
     return navigator.userAgent.match(toMatchItem);
   });
 }
-console.log(detectMob());
-if (detectMob()) {
+
+// Checks if cookie has value true. Takes string as argument
+function isAppBannerHidden(cookieName) {
+  let res = decodeURIComponent(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + encodeURIComponent(cookieName).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null;
+  if (res) {
+    return true
+  } else {
+    return false
+  }
+ }
+ 
+
+
+// If User is using Android or iPhone AND has no cookie hideAppBanner. Show app banner
+if (detectMob() && !isAppBannerHidden("hideAppBanner")) {
   element.innerHTML = `
   <div
+        id="app-banner"
         class="banner"
         style="
           background-color: #eaeaea;
           height: 70px;
           margin: 0px 0px 10px 0px;
           display: flex;
-          justify-content: space-around;
+          padding: 0 12px;
+          justify-content: space-between;
           align-items: center;
         "
       >
       
-        <div style="display: flex; justify-content: center;align-items: center">
-        <span style="background-color: #999;color:#222; padding: 0px 6px 2px 6px;border-radius: 10px">x</span>
+        <div style="display: flex; justify-content: start;align-items: center">
+        <span onClick="hideBanner()" style="margin-right: 8px;">x</span>
           <img
             height="40"
             src="${icon}"
             alt=""
-            style="padding: 6px; margin: 6px 12px; border-radius: 12px;background-color:white;"
+            style="padding: 6px; margin-right: 12px; border-radius: 12px;background-color:white;"
           />
           <div
             style="
@@ -68,11 +86,22 @@ if (detectMob()) {
               font-size: 12px;
               border-radius: 4px;
             "
-            href="${dynamic_root}?link=https://fotbollsthlm.se/${post_id}&ibi=se.capolista.fotbollsthlm&isi=1509053914&efr=1&d=1"
+            target="_blank"
+            href="${dynamic_root}?link=https://fotbollsthlm.se/${post_id}&ibi=se.capolista.fotbollsthlm&isi=1509053914&efr=1"
             >Öppna i appen</a
           >
         </div>
       </div>
   `;
   document.body.prepend(element);
+}
+
+ // Hides banner
+ function hideBanner() {
+  let banner = document.getElementById("app-banner")
+  banner.remove()
+  let expireTime = new Date;
+  expireTime.setMinutes(expireTime.getMinutes() + 1)
+  document.cookie = `hideAppBanner=true; expires= ${expireTime};`
+  console.log("banner hidden")
 }
