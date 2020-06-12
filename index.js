@@ -26,6 +26,8 @@ function detectMob() {
   });
 }
 
+const url = `${dynamic_root}/?link=https://fotbollsthlm.se/${post_id}&ibi=se.capolista.fotbollsthlm&isi=1509053914&efr=1`;
+
 // Checks if cookie has value true. Takes string as argument
 function isAppBannerHidden(cookieName) {
   let res = decodeURIComponent(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + encodeURIComponent(cookieName).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null;
@@ -35,8 +37,6 @@ function isAppBannerHidden(cookieName) {
     return false
   }
  }
- 
-
 
 // If User is using Android or iPhone AND has no cookie hideAppBanner. Show app banner
 if (detectMob() && !isAppBannerHidden("hideAppBanner")) {
@@ -55,13 +55,14 @@ if (detectMob() && !isAppBannerHidden("hideAppBanner")) {
         "
       >
       
-        <div style="display: flex; justify-content: start;align-items: center">
-        <span onClick="hideBanner()" style="margin-right: 8px;">x</span>
+        <div style="display: flex; justify-content: start;align-items: center; max-width: 60%;">
+        <div style="display:"><span onClick="hideBanner()" style="margin-right: 12px;margin-top:-4px;color: #a0a0a0">x</span></div>
+
           <img
             height="40"
             src="${icon}"
             alt=""
-            style="padding: 6px; margin-right: 12px; border-radius: 12px;background-color:white;"
+            style="border: 1px solid #ccc;padding: 6px; margin-right: 12px; border-radius: 12px;background-color:white;"
           />
           <div
             style="
@@ -69,7 +70,7 @@ if (detectMob() && !isAppBannerHidden("hideAppBanner")) {
               flex-direction: column;
               justify-content: center;
               align-items: flex-start;
-              max-width: 160px;
+              
             "
           >
             <span style="font-size: 16px; font-weight: bold;">${app_name}</span>
@@ -81,13 +82,14 @@ if (detectMob() && !isAppBannerHidden("hideAppBanner")) {
             style="
               background-color: #37a737;
               color: white;
-              padding: 8px 8px;
+              padding: 10px 8px;
               text-decoration: none;
               font-size: 12px;
+              
               border-radius: 4px;
             "
             target="_blank"
-            href="${dynamic_root}?link=https://fotbollsthlm.se/${post_id}&ibi=se.capolista.fotbollsthlm&isi=1509053914&efr=1"
+            href="${encodeURI(url)}"
             >Öppna i appen</a
           >
         </div>
@@ -101,7 +103,7 @@ if (detectMob() && !isAppBannerHidden("hideAppBanner")) {
   let banner = document.getElementById("app-banner")
   banner.remove()
   let expireTime = new Date;
-  expireTime.setMinutes(expireTime.getMinutes() + 1)
+  expireTime.setMonth(expireTime.getMonth() + 1)
   document.cookie = `hideAppBanner=true; expires= ${expireTime};`
   console.log("banner hidden")
 }
