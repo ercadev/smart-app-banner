@@ -21,12 +21,11 @@ function detectMob() {
   const toMatch = [/Android/i, /iPhone/i];
 
   return toMatch.some((toMatchItem) => {
-    console.log(toMatchItem);
     return navigator.userAgent.match(toMatchItem);
   });
 }
 
-const url = `${dynamic_root}/?link=https://fotbollsthlm.se/${post_id}&ibi=se.capolista.fotbollsthlm&isi=1509053914&efr=1`;
+const url = `${dynamic_root}/?link=https://fotbollsthlm.se/${post_id}&apn=se.capolista.fotbollstockholm&ibi=se.capolista.fotbollsthlm&isi=1509053914&efr=1&d=1`;
 
 // Checks if cookie has value true. Takes string as argument
 function isAppBannerHidden(cookieName) {
@@ -45,6 +44,7 @@ if (detectMob() && !isAppBannerHidden("hideAppBanner")) {
         id="app-banner"
         class="banner"
         style="
+        font-family: Roboto;
           background-color: #eaeaea;
           height: 70px;
           margin: 0px 0px 10px 0px;
@@ -104,6 +104,5 @@ if (detectMob() && !isAppBannerHidden("hideAppBanner")) {
   banner.remove()
   let expireTime = new Date;
   expireTime.setMonth(expireTime.getMonth() + 1)
-  document.cookie = `hideAppBanner=true; expires= ${expireTime};`
-  console.log("banner hidden")
+  document.cookie = `hideAppBanner=true; expires= ${expireTime};path=/;`
 }
