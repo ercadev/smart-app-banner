@@ -14,7 +14,10 @@ let app_slogan = document
 let dynamic_root = document
   .getElementById("smart-banner-script")
   .getAttribute("dynamic_root");
-let icon = document.querySelector('link[rel="icon"]').href;
+let dynamic_path = document
+  .getElementById("smart-banner-script")
+  .getAttribute("dynamic_path");
+let icon = document.querySelector('meta[property="og:image"]').content;
 
 // Checks if user is using Android or iPhone
 function detectMob() {
@@ -25,7 +28,7 @@ function detectMob() {
   });
 }
 
-const url = `${dynamic_root}/?link=https://fotbollsthlm.se/${post_id}&apn=se.capolista.fotbollstockholm&ibi=se.capolista.fotbollsthlm&isi=1509053914&efr=1`;
+const url = `${dynamic_root}${post_id}&${dynamic_path}`;
 
 // Checks if cookie has value true. Takes string as argument
 function isAppBannerHidden(cookieName) {
@@ -109,6 +112,7 @@ if (detectMob() && !isAppBannerHidden("hideAppBanner")) {
 }
 
 // Hides banner
+// Shows again in 30 days
 function hideBanner() {
   let banner = document.getElementById("app-banner");
   banner.remove();
