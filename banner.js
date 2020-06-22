@@ -14,7 +14,10 @@ let app_slogan = document
 let dynamic_root = document
   .getElementById("smart-banner-script")
   .getAttribute("dynamic_root");
-let icon = document.querySelector('link[rel="icon"]').href;
+let dynamic_path = document
+  .getElementById("smart-banner-script")
+  .getAttribute("dynamic_path");
+let icon = document.querySelector('meta[property="og:image"]').content;
 
 // Checks if user is using Android or iPhone
 function detectMob() {
@@ -25,17 +28,27 @@ function detectMob() {
   });
 }
 
-const url = `${dynamic_root}/?link=https://fotbollsthlm.se/${post_id}&apn=se.capolista.fotbollstockholm&ibi=se.capolista.fotbollsthlm&isi=1509053914&efr=1&d=1`;
+const url = `${dynamic_root}${post_id}&${dynamic_path}`;
 
 // Checks if cookie has value true. Takes string as argument
 function isAppBannerHidden(cookieName) {
-  let res = decodeURIComponent(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + encodeURIComponent(cookieName).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null;
+  let res =
+    decodeURIComponent(
+      document.cookie.replace(
+        new RegExp(
+          "(?:(?:^|.*;)\\s*" +
+            encodeURIComponent(cookieName).replace(/[\-\.\+\*]/g, "\\$&") +
+            "\\s*\\=\\s*([^;]*).*$)|^.*$"
+        ),
+        "$1"
+      )
+    ) || null;
   if (res) {
-    return true
+    return true;
   } else {
-    return false
+    return false;
   }
- }
+}
 
 // If User is using Android or iPhone AND has no cookie hideAppBanner. Show app banner
 if (detectMob() && !isAppBannerHidden("hideAppBanner")) {
@@ -72,7 +85,7 @@ if (detectMob() && !isAppBannerHidden("hideAppBanner")) {
               
             "
           >
-            <span style="font-size: 16px; font-weight: bold;">${app_name}</span>
+            <span style="font-size: 16px; font-weight: 500;">${app_name}</span>
             <span style="font-size: 10px;">${app_slogan}</span>
           </div>
         </div>
@@ -97,11 +110,12 @@ if (detectMob() && !isAppBannerHidden("hideAppBanner")) {
   document.body.prepend(element);
 }
 
- // Hides banner
- function hideBanner() {
-  let banner = document.getElementById("app-banner")
-  banner.remove()
-  let expireTime = new Date;
-  expireTime.setMonth(expireTime.getMonth() + 1)
-  document.cookie = `hideAppBanner=true; expires= ${expireTime};path=/;`
+// Hides banner
+// Shows again in 30 days
+function hideBanner() {
+  let banner = document.getElementById("app-banner");
+  banner.remove();
+  let expireTime = new Date();
+  expireTime.setMonth(expireTime.getMonth() + 1);
+  document.cookie = `hideAppBanner=true; expires= ${expireTime};path=/;`;
 }
