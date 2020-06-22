@@ -17,7 +17,7 @@ let dynamic_root = document
 let dynamic_path = document
   .getElementById("smart-banner-script")
   .getAttribute("dynamic_path");
-let icon = document.querySelector('meta[property="og:image"]').content;
+let icon = document.querySelector('link[rel="icon"][sizes="192x192"]').href;
 
 // Checks if user is using Android or iPhone
 function detectMob() {
@@ -74,7 +74,7 @@ if (detectMob() && !isAppBannerHidden("hideAppBanner")) {
           <img
             src="${icon}"
             alt=""
-            style="height: 40px;border: 1px solid #ccc;padding: 6px; margin-right: 12px; border-radius: 12px;background-color:white;"
+            style="height: 40px; width:40px;border: 1px solid #ccc;padding: 6px; margin-right: 12px; border-radius: 12px;background-color:white;"
           />
           <div
             style="
