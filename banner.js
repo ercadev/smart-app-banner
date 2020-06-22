@@ -59,10 +59,9 @@ if (detectMob() && !isAppBannerHidden("hideAppBanner")) {
         <div style="display:"><span onClick="hideBanner()" style="margin-right: 12px;margin-top:-4px;color: #a0a0a0">x</span></div>
 
           <img
-            height="40"
             src="${icon}"
             alt=""
-            style="border: 1px solid #ccc;padding: 6px; margin-right: 12px; border-radius: 12px;background-color:white;"
+            style="height: 40px;border: 1px solid #ccc;padding: 6px; margin-right: 12px; border-radius: 12px;background-color:white;"
           />
           <div
             style="
